@@ -5,8 +5,8 @@ version: 2
 machine:
   environment:
     GOROOT: ""
-    PATH: "${HOME}/monkey/bin"
-    GOPATH: "${HOME}/monkey"
+    PATH: "${HOME}/go_workspace/bin"
+    GOPATH: "${HOME}/go_workspace"
 jobs:
   build:
     docker:
