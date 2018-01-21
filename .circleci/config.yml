@@ -2,21 +2,14 @@
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
-machine:
-  environment:
-    GOROOT: ""
-    PATH: "${HOME}/go_workspace/bin"
-    GOPATH: "${HOME}/go_workspace"
 jobs:
   build:
     docker:
       # specify the version
       - image: circleci/golang:1.9
       
-    working_directory: ${GOPATH}/src/monkey
+    working_directory: /go/src/github.com/hitochan777/monkey
     steps:
       - checkout
-
-      # specify any bash command here prefixed with `run: `
       - run: go get -v -t -d ./...
       - run: go test -v ./...
