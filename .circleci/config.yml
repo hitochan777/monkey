@@ -13,3 +13,8 @@ jobs:
       - checkout
       - run: go get -v -t -d ./...
       - run: go test -v ./...
+      - run: .circleci/coverage.sh
+      - run:
+          name: Upload coverage to codecov
+          command: bash <(curl -s https://codecov.io/bash) -f coverage.txt -t $CODECOV_TOKEN
+
