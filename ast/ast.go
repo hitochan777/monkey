@@ -1,5 +1,9 @@
 package ast
 
+import (
+	"github.com/hitochan777/monkey/token"
+)
+
 type Node interface {
 	TokenLiteral() string
 }
