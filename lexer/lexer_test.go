@@ -41,7 +41,7 @@ func TestNextToken(t *testing.T) {
 			{token.EOF, ""},
 		}
 
-		l := New(input)
+		l := NewLexer(input)
 		for i, tt := range tests {
 			tok := l.NextToken()
 			compareToken(t, i, tok, tt)
@@ -97,7 +97,7 @@ func TestNextToken(t *testing.T) {
 			{token.EOF, ""},
 		}
 
-		l := New(input)
+		l := NewLexer(input)
 		for i, tt := range tests {
 			tok := l.NextToken()
 			compareToken(t, i, tok, tt)
@@ -126,7 +126,7 @@ func TestNextToken(t *testing.T) {
 			{token.EOF, ""},
 		}
 
-		l := New(input)
+		l := NewLexer(input)
 		for i, tt := range tests {
 			tok := l.NextToken()
 			compareToken(t, i, tok, tt)
@@ -163,7 +163,7 @@ func TestNextToken(t *testing.T) {
 			{token.EOF, ""},
 		}
 
-		l := New(input)
+		l := NewLexer(input)
 		for i, tt := range tests {
 			tok := l.NextToken()
 			compareToken(t, i, tok, tt)
@@ -188,7 +188,7 @@ func TestNextToken(t *testing.T) {
 			{token.EOF, ""},
 		}
 
-		l := New(input)
+		l := NewLexer(input)
 		for i, tt := range tests {
 			tok := l.NextToken()
 			compareToken(t, i, tok, tt)
@@ -204,7 +204,7 @@ func TestNextToken(t *testing.T) {
 			{token.ASSIGN, "="},
 		}
 
-		l := New(input)
+		l := NewLexer(input)
 		for i, tt := range tests {
 			tok := l.NextToken()
 			compareToken(t, i, tok, tt)
