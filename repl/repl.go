@@ -6,8 +6,21 @@ import (
 	"io"
 
 	"github.com/hitochan777/monkey/lexer"
-	"github.com/hitochan777/monkey/token"
+	"github.com/hitochan777/monkey/parser"
 )
+
+const MONKEY_FACE = `
+   .--.  .-"     "-.  .--.
+  / .. \/  .-. .-.  \/ .. \
+ | |  '|  /   Y   \  |'  | |
+ | \   \  \ 0 | 0 /  /   / |
+  \ '- ,\.-""" """-./, -' /
+   "'-' /_   ^ ^   _\ '-'"
+       |  \._   _./  |
+       \   \ "~" /   /
+        '._ '-=-' _.'
+           '~---~'
+`
 
 const PROPMT = ">> "
 
@@ -20,11 +33,27 @@ func Start(in io.Reader, out io.Writer) {
 		if !scanned {
 			return
 		}
+
 		line := scanner.Text()
 		l := lexer.NewLexer(line)
+		p := parser.NewParser(l)
 
-		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-			fmt.Printf("%+v\n", tok)
+		program := p.ParseProgram()
+		if len(p.Errors()) != 0 {
+			printParseErrors(out, p.Errors())
+			continue
 		}
+
+		io.WriteString(out, program.String())
+		io.WriteString(out, "\n")
+	}
+}
+
+func printParseErrors(out io.Writer, errors []string) {
+	io.WriteString(out, MONKEY_FACE)
+	io.WriteString(out, "Woops! We ran into some monkey business here!\n")
+	io.WriteString(out, " parse errors:\n")
+	for _, msg := range errors {
+		io.WriteString(out, "\t"+msg+"\n")
 	}
 }
