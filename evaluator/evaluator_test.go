@@ -8,13 +8,15 @@ import (
 	"github.com/hitochan777/monkey/parser"
 )
 
-func TestEvalIntegerExpression(t *testing.T) {
+func TestLiteralExpression(t *testing.T) {
 	tests := []struct {
 		input    string
-		expected int64
+		expected interface{}
 	}{
 		{"5", 5},
 		{"10", 10},
+		{"true", true},
+		{"false", false},
 	}
 
 	for _, tt := range tests {
@@ -33,12 +35,15 @@ func testEval(input string) object.Object {
 
 func testObject(t *testing.T, obj object.Object, expected interface{}) bool {
 	switch v := expected.(type) {
+	case int:
 	case int64:
-		return testIntegerObject(t, obj, v)
+		return testIntegerObject(t, obj, int64(v))
+	case bool:
+		return testBooleanObject(t, obj, v)
 	default:
 		t.Errorf("Unexpected type %T", v)
-		return false
 	}
+	return false
 }
 
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
@@ -49,6 +54,19 @@ func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	}
 	if result.Value != expected {
 		t.Errorf("object has wrong value. got=%d, want=%d", result.Value, expected)
+		return false
+	}
+	return true
+}
+
+func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
+	result, ok := obj.(*object.Boolean)
+	if !ok {
+		t.Errorf("object is not Boolean. got=%T (%+v)", obj, obj)
+		return false
+	}
+	if result.Value != expected {
+		t.Errorf("object has wrong value. got=%t, want=%t", result.Value, expected)
 		return false
 	}
 	return true
