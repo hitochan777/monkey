@@ -15,6 +15,8 @@ func TestLiteralExpression(t *testing.T) {
 	}{
 		{"5", 5},
 		{"10", 10},
+		{"-5", -5},
+		{"-10", -10},
 		{"true", true},
 		{"false", false},
 	}
