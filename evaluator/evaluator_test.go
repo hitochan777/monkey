@@ -41,7 +41,7 @@ func TestLiteralExpression(t *testing.T) {
 		{"true == true", true},
 		{"false == false", true},
 		{"true == false", false},
-		{"true != fasle", true},
+		{"true != false", true},
 		{"false != true", true},
 		{"(1 < 2) == true", true},
 		{"(1 < 2) == false", false},
@@ -59,8 +59,9 @@ func testEval(input string) object.Object {
 	l := lexer.NewLexer(input)
 	p := parser.NewParser(l)
 	program := p.ParseProgram()
+	env := object.NewEnvironment()
 
-	return Eval(program)
+	return Eval(program, env)
 }
 
 func testObject(t *testing.T, obj object.Object, expected interface{}) bool {
@@ -241,7 +242,7 @@ func TestLetStatement(t *testing.T) {
 	}{
 		{"let a = 5; a;", 5},
 		{"let a = 5 * 5; a;", 25},
-		{"let a = 5; let b= a; b;", 5},
+		{"let a = 5; let b = a; b;", 5},
 		{"let a = 5; let b = a; let c = a + b + 5; c;", 15},
 	}
 
