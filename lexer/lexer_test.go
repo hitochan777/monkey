@@ -210,4 +210,24 @@ func TestNextToken(t *testing.T) {
 			compareToken(t, i, tok, tt)
 		}
 	}
+
+	// test 7: test string
+	{
+		input := `"foobar"
+		"foo bar"
+		`
+
+		tests := []ExpectedToken{
+			{token.STRING, "foobar"},
+			{token.STRING, "foo bar"},
+			{token.EOF, ""},
+		}
+
+		l := NewLexer(input)
+		for i, tt := range tests {
+			tok := l.NextToken()
+			compareToken(t, i, tok, tt)
+		}
+
+	}
 }
