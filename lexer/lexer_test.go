@@ -25,9 +25,9 @@ func compareToken(t *testing.T, testNum int, tok token.Token, expectedToken Expe
 }
 
 func TestNextToken(t *testing.T) {
-	// test 1
+	// test 1: symbols
 	{
-		input := `=+(){},;`
+		input := `=+(){},;[]`
 
 		tests := []ExpectedToken{
 			{token.ASSIGN, "="},
@@ -38,6 +38,8 @@ func TestNextToken(t *testing.T) {
 			{token.RBRACE, "}"},
 			{token.COMMA, ","},
 			{token.SEMICOLON, ";"},
+			{token.LBRACKET, "["},
+			{token.RBRACKET, "]"},
 			{token.EOF, ""},
 		}
 
