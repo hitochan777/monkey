@@ -6,14 +6,14 @@ jobs:
   build:
     docker:
       # specify the version
-      - image: circleci/golang:1.9
+      - image: circleci/golang:1.10
       
     working_directory: /go/src/github.com/hitochan777/monkey
     steps:
       - checkout
       - run: go get -v -t -d ./...
       - run: go test -v ./...
-      - run: .circleci/coverage.sh
+      - run: go test -race -coverprofile=coverage.txt -covermode=atomic ./... 
       - run:
           name: Upload coverage to codecov
           command: bash <(curl -s https://codecov.io/bash) -f coverage.txt -t $CODECOV_TOKEN
