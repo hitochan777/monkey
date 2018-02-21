@@ -474,12 +474,12 @@ func testBooleanLiteral(t *testing.T, exp ast.Expression, value bool) bool {
 	}
 
 	if boolean.Value != value {
-		t.Errorf("boolean.Value not %s. got=%s", value, boolean.Value)
+		t.Errorf("boolean.Value not %t. got=%t", value, boolean.Value)
 		return false
 	}
 
 	if boolean.TokenLiteral() != fmt.Sprintf("%t", value) {
-		t.Errorf("boolean.TokenLiteral not %s. got=%s", value, boolean.TokenLiteral())
+		t.Errorf("boolean.TokenLiteral not %t. got=%s", value, boolean.TokenLiteral())
 		return false
 	}
 
@@ -593,7 +593,7 @@ func TestFunctionLiteralParsing(t *testing.T) {
 	checkParserErrors(t, p)
 
 	if len(program.Statements) != 1 {
-		t.Fatal("program.Body does not contain 1 statements. got=%d\n", len(program.Statements))
+		t.Fatalf("program.Body does not contain 1 statements. got=%d\n", len(program.Statements))
 	}
 
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
@@ -663,7 +663,7 @@ func TestCallExpressionParsing(t *testing.T) {
 	checkParserErrors(t, p)
 
 	if len(program.Statements) != 1 {
-		t.Fatal("program.Body does not contain 1 statements. got=%d\n", len(program.Statements))
+		t.Fatalf("program.Body does not contain 1 statements. got=%d\n", len(program.Statements))
 	}
 
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
@@ -698,7 +698,7 @@ func TestStringLiteralExpression(t *testing.T) {
 	checkParserErrors(t, p)
 
 	if len(program.Statements) != 1 {
-		t.Fatal("program.Body does not contain 1 statements. got=%d\n", len(program.Statements))
+		t.Fatalf("program.Body does not contain 1 statements. got=%d\n", len(program.Statements))
 	}
 
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
