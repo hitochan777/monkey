@@ -29,7 +29,7 @@ var builtins = map[string]*object.Builtin{
 			arg, ok := args[0].(*object.Array)
 
 			if !ok {
-				return newError("argument to `first` not supported, got %s", args[0].Type())
+				return newError("argument to `first` must be ARRAY. got %s", args[0].Type())
 			}
 
 			if len(arg.Elements) > 0 {
@@ -47,7 +47,7 @@ var builtins = map[string]*object.Builtin{
 
 			arg, ok := args[0].(*object.Array)
 			if !ok {
-				return newError("argument to `last` not supported, got %s", args[0].Type())
+				return newError("argument to `last` must be ARRAY. got %s", args[0].Type())
 			}
 
 			length := len(arg.Elements)
