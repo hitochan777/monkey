@@ -79,4 +79,19 @@ var builtins = map[string]*object.Builtin{
 			return NULL
 		},
 	},
+	"push": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 2 {
+				return newError("wrong number of arguments. got=%d, want=2", len(args))
+			}
+
+			array, ok := args[0].(*object.Array)
+			if !ok {
+				return newError("first argument to `push` must be ARRAY. got %s", args[0].Type())
+			}
+
+			newElements := append(array.Elements, args[1])
+			return &object.Array{Elements: newElements}
+		},
+	},
 }
