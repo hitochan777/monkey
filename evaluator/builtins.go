@@ -21,4 +21,41 @@ var builtins = map[string]*object.Builtin{
 			}
 		},
 	},
+	"first": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+			arg, ok := args[0].(*object.Array)
+
+			if !ok {
+				return newError("argument to `first` not supported, got %s", args[0].Type())
+			}
+
+			if len(arg.Elements) > 0 {
+				return arg.Elements[0]
+			}
+
+			return NULL
+		},
+	},
+	"last": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("wrong number of arguments. got=%d, want=1", len(args))
+			}
+
+			arg, ok := args[0].(*object.Array)
+			if !ok {
+				return newError("argument to `last` not supported, got %s", args[0].Type())
+			}
+
+			length := len(arg.Elements)
+			if length > 0 {
+				return arg.Elements[length-1]
+			}
+
+			return NULL
+		},
+	},
 }
