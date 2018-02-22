@@ -90,7 +90,10 @@ var builtins = map[string]*object.Builtin{
 				return newError("first argument to `push` must be ARRAY. got %s", args[0].Type())
 			}
 
-			newElements := append(array.Elements, args[1])
+			length := len(array.Elements)
+			newElements := make([]object.Object, length+1, length+1)
+			copy(newElements, array.Elements)
+			newElements[length] = args[1]
 			return &object.Array{Elements: newElements}
 		},
 	},
