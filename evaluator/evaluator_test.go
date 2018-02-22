@@ -92,6 +92,33 @@ func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	return true
 }
 
+func testIntegerArrayObject(t *testing.T, obj object.Object, expected []int64) bool {
+	array, ok := obj.(*object.Array)
+	if !ok {
+		t.Errorf("object is not Array. got=%T (%+v)", obj, obj)
+		return false
+	}
+
+	if len(expected) != len(array.Elements) {
+		t.Errorf("wrong number of elements. got=%d, want=%d", len(array.Elements), len(expected))
+		return false
+	}
+
+	for i, obj := range array.Elements {
+		integer, ok := obj.(*object.Integer)
+		if !ok {
+			t.Errorf("integer is not object.Integer. got=%T", obj)
+			return false
+		}
+		if integer.Value != expected[i] {
+			t.Errorf("object has wrong value. got=%d, want=%d", integer.Value, expected[i])
+			return false
+		}
+	}
+
+	return true
+}
+
 func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
 	result, ok := obj.(*object.Boolean)
 	if !ok {
@@ -359,6 +386,10 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`let array = [1, 2, 3]; last(array);`, 3},
 		{`last(-1);`, "argument to `last` must be ARRAY. got INTEGER"},
 		{`last([3, 2, 1], 2);`, "wrong number of arguments. got=2, want=1"},
+		{`rest([]);`, NULL},
+		{`let array = [1]; rest(array);`, []int64{}},
+		{`let array = [1, 2, 3, 4]; rest(array);`, []int64{2, 3, 4}},
+		{`let array = [1, 2, 3, 4]; rest(rest(array));`, []int64{3, 4}},
 	}
 
 	for _, tt := range tests {
@@ -376,6 +407,8 @@ func TestBuiltinFunctions(t *testing.T) {
 			if errObj.Message != expected {
 				t.Errorf("wrong error message. expected=%q, got=%q", expected, errObj.Message)
 			}
+		case []int64:
+			testIntegerArrayObject(t, evaluated, expected)
 		}
 	}
 }
