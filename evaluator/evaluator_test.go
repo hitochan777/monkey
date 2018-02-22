@@ -388,6 +388,7 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`last([3, 2, 1], 2);`, "wrong number of arguments. got=2, want=1"},
 		{`rest(1);`, "argument to `rest` must be ARRAY. got INTEGER"},
 		{`rest([]);`, NULL},
+		{`rest([1, 2], 2);`, "wrong number of arguments. got=2, want=1"},
 		{`let array = [1]; rest(array);`, []int64{}},
 		{`let array = [1, 2, 3, 4]; rest(array);`, []int64{2, 3, 4}},
 		{`let array = [1, 2, 3, 4]; rest(rest(array));`, []int64{3, 4}},
