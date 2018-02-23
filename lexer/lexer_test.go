@@ -232,4 +232,26 @@ func TestNextToken(t *testing.T) {
 		}
 
 	}
+
+	// test 8: hash
+	{
+		input := `{"foo": "bar"}`
+
+		tests := []ExpectedToken{
+			{token.LBRACE, "{"},
+			{token.STRING, "foo"},
+			{token.COLON, ":"},
+			{token.STRING, "bar"},
+			{token.RBRACE, "}"},
+			{token.EOF, ""},
+		}
+
+		l := NewLexer(input)
+		for i, tt := range tests {
+			tok := l.NextToken()
+			compareToken(t, i, tok, tt)
+		}
+
+	}
+
 }
