@@ -782,7 +782,7 @@ func TestParsingHashingLiteralStringKeys(t *testing.T) {
 	}
 
 	expected := map[string]int64{
-		"one:":  1,
+		"one":   1,
 		"two":   2,
 		"three": 3,
 	}
@@ -793,7 +793,11 @@ func TestParsingHashingLiteralStringKeys(t *testing.T) {
 			t.Errorf("key is not ast.StringLiteral. got=%T", key)
 		}
 
-		expectedValue := expected[literal.String()]
+		expectedValue, ok := expected[literal.Value]
+
+		if !ok {
+			t.Errorf("literal.Value is not in expected. got=%s", literal.Value)
+		}
 
 		testIntegerLiteral(t, value, expectedValue)
 	}
@@ -849,7 +853,7 @@ func TestParsingHashingLiteralBooleanKeys(t *testing.T) {
 		t.Fatalf("exp is not ast.HashLiteral. got=%T", stmt.Expression)
 	}
 
-	if len(hash.Pairs) != 3 {
+	if len(hash.Pairs) != 2 {
 		t.Errorf("hash.Pairs has wrong length. got=%d", len(hash.Pairs))
 	}
 
@@ -890,7 +894,7 @@ func TestParsingEmptyHashLiteral(t *testing.T) {
 }
 
 func TestParsingHashLiteralsWithExpressions(t *testing.T) {
-	input = `{"one": 0 + 1, "two": 10 - 8, "three": 15 / 5}`
+	input := `{"one": 0 + 1, "two": 10 - 8, "three": 15 / 5}`
 
 	l := lexer.NewLexer(input)
 	p := NewParser(l)
@@ -912,7 +916,26 @@ func TestParsingHashLiteralsWithExpressions(t *testing.T) {
 			testInfixExpression(t, e, 0, "+", 1)
 		},
 		"two": func(e ast.Expression) {
-			testInfixExpression(t, e, 0, "+", 1)
+			testInfixExpression(t, e, 10, "-", 8)
 		},
+		"three": func(e ast.Expression) {
+			testInfixExpression(t, e, 15, "/", 5)
+		},
+	}
+
+	for key, value := range hash.Pairs {
+		literal, ok := key.(*ast.StringLiteral)
+		if !ok {
+			t.Errorf("key is not ast.StringLiteral. got=%T", key)
+			continue
+		}
+
+		testFunc, ok := tests[literal.String()]
+		if !ok {
+			t.Errorf("No test function for key %q found", literal.String())
+			continue
+		}
+
+		testFunc(value)
 	}
 }
