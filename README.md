@@ -7,8 +7,16 @@ Interpreter for monkey programming language written in Golang!
 # Requirements
 
 - Go >= 1.9
+- dep
 
 # Install
 
 TBW
+
+# Development
+
+```
+cd $GOPATH/github.com/hitochan777/monkey
+dep ensure
+```
 
