@@ -6,9 +6,17 @@ import (
 	"os/user"
 
 	"github.com/hitochan777/monkey/repl"
+
+	"github.com/nsf/termbox-go"
 )
 
 func main() {
+	err := termbox.Init()
+	if err != nil {
+		panic(err)
+	}
+	defer termbox.Close()
+
 	user, err := user.Current()
 	if err != nil {
 		panic(err)
