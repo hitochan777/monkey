@@ -1,4 +1,4 @@
-package repl
+package runner
 
 import (
 	"bufio"
@@ -26,12 +26,15 @@ const MONKEY_FACE = `
 
 const PROPMT = ">> "
 
-func Start(in io.Reader, out io.Writer) {
+func Start(in io.Reader, out io.Writer, isRepl bool) {
 	scanner := bufio.NewScanner(in)
 	env := object.NewEnvironment()
 
 	for {
-		fmt.Printf(PROPMT)
+		if isRepl {
+			fmt.Printf(PROPMT)
+		}
+
 		scanned := scanner.Scan()
 		if !scanned {
 			return
@@ -48,7 +51,7 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		evaluated := evaluator.Eval(program, env)
-		if evaluated != nil {
+		if isRepl && evaluated != nil {
 			io.WriteString(out, evaluated.Inspect())
 			io.WriteString(out, "\n")
 		}
